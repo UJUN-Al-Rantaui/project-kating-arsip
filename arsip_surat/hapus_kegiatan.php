@@ -4,6 +4,13 @@ if (empty($_SESSION['admin'])) {
     $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
     header("Location: ./");
     die();
+
+// cek hak akses
+} elseif ($_SESSION['admin'] != 2) {
+    echo '<script language="javascript">
+                window.alert("ERROR! Anda tidak memiliki hak akses untuk menghapus data ini");
+                window.location.href="./admin.php?page=tk";
+              </script>';
 } else {
 
     if (isset($_SESSION['errQ'])) {
@@ -19,21 +26,21 @@ if (empty($_SESSION['admin'])) {
                 </div>';
         unset($_SESSION['errQ']);
     }
-    $page = 'tsc';
+    $page = 'tk';
 
     // import dependency yang diperlukan
-    require_once __DIR__."/data/SuratCuti.php";
-    require_once __DIR__."/data/SuratCutiRepository.php";
-    require_once __DIR__."/data/SuratCutiRepositoryImpl.php";
-    require_once __DIR__."/data/SuratCutiService.php";
+    require_once __DIR__."/data/Kegiatan.php";
+    require_once __DIR__."/data/KegiatanRepository.php";
+    require_once __DIR__."/data/KegiatanRepositoryImpl.php";
+    require_once __DIR__."/data/KegiatanService.php";
 
-    $suratCutiService = new SuratCutiService(new SuratCutiRepositoryImpl());
-    $suratCuti = $suratCutiService->findByKodeCuti($_REQUEST['kode_cuti']);
+    $kegiatanService = new KegiatanService(new KegiatanRepositoryImpl());
+    $kegiatan = $kegiatanService->findById($_REQUEST['id']);
 
     // memeriksa apakah data ada
-    if ($suratCuti == null) {
+    if ($kegiatan == null) {
     echo '<script language="javascript">
-            window.alert("ERROR! Kode Cuti tidak bisa ditemukan");
+            window.alert("ERROR! ID Kegiatan tidak bisa ditemukan");
             window.location.href="./admin.php?page='.$page.'";
             </script>';
     } else {
@@ -51,40 +58,45 @@ if (empty($_SESSION['admin'])) {
 				            </thead>
 				            <tbody>
                                 <tr>
-                                    <td width="13%">Kode Cuti</td>
+                                    <td width="13%">ID Kegiatan</td>
                                     <td width="1%">:</td>
-                                    <td width="86%">' . $suratCuti->getKodeCuti() . '</td>
+                                    <td width="86%">' . $kegiatan->getId() . '</td>
                                 </tr>
                                 <tr>
-                                    <td width="13%">No. NIP</td>
+                                    <td width="13%">Kegiatan</td>
                                     <td width="1%">:</td>
-                                    <td width="86%">' . $suratCuti->getNip() . '</td>
+                                    <td width="86%">' . $kegiatan->getKegiatan() . '</td>
+                                </tr>
+                                <tr>
+                                    <td width="13%">Tanggal Mulai</td>
+                                    <td width="1%">:</td>
+                                    <td width="86%">' . $kegiatan->getTanggalMulai()->format('d-m-Y') . '</td>
+                                </tr>
+                                <tr>
+                                    <td width="13%">Tanggal Mulai</td>
+                                    <td width="1%">:</td>
+                                    <td width="86%">' . $kegiatan->getTanggalSelesai()->format('d-m-Y') . '</td>
                                 </tr>
     			                <tr>
-                                    <td width="13%">Nama</td>
+                                    <td width="13%">Tempat</td>
                                     <td width="1%">:</td>
-                                    <td width="86%">' . $suratCuti->getNama() . '</td>
+                                    <td width="86%">' . $kegiatan->getTempat() . '</td>
     			                </tr>
     			                <tr>
-    			                    <td width="13%">Jenis Cuti</td>
+    			                    <td width="13%">Pelaksana</td>
     			                    <td width="1%">:</td>
-    			                    <td width="86%">' . $suratCuti->getJenisCuti() . '</td>
+    			                    <td width="86%">' . $kegiatan->getPelaksanaString(', ') . '</td>
     			                </tr>
     			                <tr>
-    			                    <td width="13%">Tanggal Mulai</td>
+    			                    <td width="13%">Peserta</td>
     			                    <td width="1%">:</td>
-    			                    <td width="86%">' . $suratCuti->getTanggalMulai()->format('d-m-Y') . '</td>
-    			                </tr>
-    			                <tr>
-    			                    <td width="13%">Tanggal Mulai</td>
-    			                    <td width="1%">:</td>
-    			                    <td width="86%">' . $suratCuti->getTanggalSelesai()->format('d-m-Y') . '</td>
+    			                    <td width="86%">' . $kegiatan->getPesertaString(', ') . '</td>
     			                </tr>
     			            </tbody>
     			   		</table>
                         </div>
                         <div class="card-action">
-        	                <a href="?page=' . $page . '&act=del&submit=yes&kode_cuti=' . $suratCuti->getKodeCuti() . '" class="btn-large deep-orange waves-effect waves-light white-text">HAPUS <i class="material-icons">delete</i></a>
+        	                <a href="?page=' . $page . '&act=del&submit=yes&id=' . $kegiatan->getId() . '" class="btn-large deep-orange waves-effect waves-light white-text">HAPUS <i class="material-icons">delete</i></a>
         	                <a href="?page=' . $page . '" class="btn-large blue waves-effect waves-light white-text">BATAL <i class="material-icons">clear</i></a>
     	                </div>
     	            </div>
@@ -94,7 +106,7 @@ if (empty($_SESSION['admin'])) {
 
         if (isset($_REQUEST['submit'])) {
             // menghapus Data
-            $isDeleted = $suratCutiService->delete($suratCuti->getKodeCuti());
+            $isDeleted = $kegiatanService->delete($kegiatan->getId());
             if ($isDeleted) {
                 $_SESSION['succDel'] = 'SUKSES! Data berhasil dihapus<br/>';
                 header("Location: ./admin.php?page=$page");
@@ -102,7 +114,7 @@ if (empty($_SESSION['admin'])) {
             } else {
                 $_SESSION['errQ'] = 'ERROR! Ada masalah dengan query';
                 echo '<script language="javascript">
-                                window.location.href="./admin.php?page=' . $page . '&act=del&kode_cuti=' . $suratCuti->getKodeCuti() . '";
+                                window.location.href="./admin.php?page=' . $page . '&act=del&id=' . $kegiatan->getId() . '";
                               </script>';
             }
         }

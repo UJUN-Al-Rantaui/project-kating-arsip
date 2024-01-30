@@ -4,6 +4,13 @@ if (empty($_SESSION['admin'])) {
     $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
     header("Location: ./");
     die();
+
+// cek hak akses
+} elseif ( $_SESSION['admin'] != 2) {
+    echo '<script language="javascript">
+            window.alert("ERROR! Anda tidak memiliki hak akses untuk mengedit data ini");
+            window.location.href="./admin.php?page=tp";
+            </script>';
 } else {
 
     $page = "tp";
@@ -136,7 +143,7 @@ if (empty($_SESSION['admin'])) {
                 </div>
                 <div class="input-field col s6">
                     <i class="material-icons prefix md-prefix">person</i>
-                    <input id="nama" type="text" class="validate" name="nama" required>
+                    <input id="nama" type="text" class="validate" name="nama" onchange="eval('')" required>
                     <?php
                     if (isset($_SESSION['namaErr'])) {
                         $nama = $_SESSION['namaErr'];

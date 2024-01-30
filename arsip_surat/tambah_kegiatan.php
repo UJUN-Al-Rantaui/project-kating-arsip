@@ -4,59 +4,72 @@ if (empty($_SESSION['admin'])) {
     $_SESSION['err'] = '<center>Anda harus login terlebih dahulu!</center>';
     header("Location: ./");
     die();
+
+// cek hak akses
+} elseif ( $_SESSION['admin'] != 2) {
+    echo '<script language="javascript">
+            window.alert("ERROR! Anda tidak memiliki hak akses untuk mengedit data ini");
+            window.location.href="./admin.php?page=tk";
+            </script>';
 } else {
 
-    $page = "tsc";
+    $page = "tk";
 
     // import dependency ang diperlukan
-    require_once __DIR__ . "/data/SuratCuti.php";
-    require_once __DIR__ . "/data/SuratCutiRepository.php";
-    require_once __DIR__ . "/data/SuratCutiRepositoryImpl.php";
-    require_once __DIR__ . "/data/SuratCutiService.php";
-    require_once __DIR__ . "/data/PegawaiRepositoryImpl.php";
-    require_once __DIR__ . "/data/PegawaiService.php";
+    require_once __DIR__ . "/data/Kegiatan.php";
+    require_once __DIR__ . "/data/KegiatanRepository.php";
+    require_once __DIR__ . "/data/KegiatanRepositoryImpl.php";
+    require_once __DIR__ . "/data/KegiatanService.php";
 
-    $suratCutiService = new SuratCutiService(new SuratCutiRepositoryImpl());
+    $kegiatanService = new KegiatanService(new KegiatanRepositoryImpl());
 
     if (isset($_REQUEST['submit'])) {
         //validasi form kosong
-        if ($_REQUEST['nip'] == "" || $_REQUEST['jenis_cuti'] == "" || $_REQUEST['tanggal_mulai'] == "" || $_REQUEST['tanggal_selesai'] == "") {
+        if ($_REQUEST['kegiatan'] == "" || $_REQUEST['tempat'] == "" || $_REQUEST['tanggal_mulai'] == "" || $_REQUEST['tanggal_selesai'] == ""
+            || $_REQUEST['pelaksana'] == "" || $_REQUEST['peserta'] == "")  {
             $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
             echo '<script language="javascript">window.history.back();</script>';
         } else {
 
-            $suratCuti = new SuratCuti(
-                kodeCuti: -1,
-                nip: $_REQUEST['nip'],
-                nama: "UNKNOWN",
-                jenisCuti: $_REQUEST['jenis_cuti'],
+            $kegiatan = new Kegiatan(
+                id: -1,
+                kegiatan: $_REQUEST['kegiatan'],
                 tanggalMulai: new DateTime($_REQUEST['tanggal_mulai']),
                 tanggalSelesai: new DateTime($_REQUEST['tanggal_selesai']),
+                tempat: $_REQUEST['tempat'],
+                pelaksana: array(),
+                peserta: array()
             );
 
-            $pegawaiService = new PegawaiService(new PegawaiRepositoryImpl());
+            $separator = (PHP_OS == "Darwin" || PHP_OS == "Linux") ? "\n":"\r\n";
+            $kegiatan->setPelaksana($_REQUEST['pelaksana'], $separator);
+            $kegiatan->setPeserta($_REQUEST['peserta'], $separator);
 
             //validasi input data
-            if (!preg_match("/^[0-9]*$/", $suratCuti->getNip())) {
-                $_SESSION['nip'] = 'Form NIP hanya boleh mengandung karakter angka';
-                echo '<script language="javascript">window.history.back();</script>';
-            } elseif (!preg_match("/^[a-zA-Z0-9.,() \/ -]*$/", $suratCuti->getJenisCuti())) {
+            if (!preg_match("/^[a-zA-Z0-9.,() \/ -]*$/", $kegiatan->getKegiatan())) {
                 $_SESSION['jenis_cuti'] = 'Form Jenis Cuti hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
                 echo '<script language="javascript">window.history.back();</script>';
-            } elseif (is_null($pegawaiService->findByNip($suratCuti->getNip()))) {
-                $_SESSION['errNotFound'] = "Tidak ada NIP yang sesuai dengan pegawai yang sudah ada";
-            } elseif(!preg_match("/^[0-9.-]*$/", $suratCuti->getTanggalMulai()->format('d-m-Y'))){
+            } elseif (!preg_match("/^[a-zA-Z0-9.,() \/ -]*$/", $kegiatan->getTempat())) {
+                $_SESSION['jenis_cuti'] = 'Form Jenis Cuti hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
+                echo '<script language="javascript">window.history.back();</script>';
+            } elseif(!preg_match("/^[0-9.-]*$/", $kegiatan->getTanggalMulai()->format('d-m-Y'))){
                 $_SESSION['tanggal_mulai'] = 'Form Tanggal Mulai hanya boleh mengandung angka dan minus(-)';
                 echo '<script language="javascript">window.history.back();</script>';
-            } elseif(!preg_match("/^[0-9.-]*$/", $suratCuti->getTanggalSelesai()->format('d-m-Y'))){
+            } elseif(!preg_match("/^[0-9.-]*$/", $kegiatan->getTanggalSelesai()->format('d-m-Y'))){
                 $_SESSION['tanggal_selesai'] = 'Form Tanggal selesai hanya boleh mengandung angka dan minus(-)';
+                echo '<script language="javascript">window.history.back();</script>';
+            } elseif (!preg_match("/^[a-zA-Z0-9.,()\r\n \/ -]*$/", $_REQUEST['pelaksana'])) {
+                $_SESSION['jenis_cuti'] = 'Form Jenis Cuti hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
+                echo '<script language="javascript">window.history.back();</script>';
+            } elseif (!preg_match("/^[a-zA-Z0-9.,()\r\n \/ -]*$/", $_REQUEST['peserta'])) {
+                $_SESSION['jenis_cuti'] = 'Form Jenis Cuti hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
                 echo '<script language="javascript">window.history.back();</script>';
             } else {
 
                 //jika form valid -> tambahkan data
-                $isAdded = (bool)$suratCutiService->register($suratCuti);
+                $isAdded = (bool)$kegiatanService->register($kegiatan);
 
-                if ($isAdded) {
+                if ($isAdded) { 
                     $_SESSION['succAdd'] = 'SUKSES! Data berhasil ditambahkan';
                     header("Location: ./admin.php?page=$page");
                     die();
@@ -76,7 +89,7 @@ if (empty($_SESSION['admin'])) {
                     <div class="nav-wrapper blue-grey darken-1">
                         <ul class="left">
                             <li class="waves-effect waves-light"><a href="?page=<?php echo $page ?>&act=add" class="judul"><i
-                                        class="material-icons">mail</i> Tambah Surat Cuti</a></li>
+                                        class="material-icons">mail</i> Tambah Kegiatan</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -122,44 +135,28 @@ if (empty($_SESSION['admin'])) {
 
                 <!-- Row in form START -->
                 <div class="input-field col s6">
-                    <i class="material-icons prefix md-prefix">looks_one</i>
-                    <input id="nip" type="text" class="validate" name="nip" required>
+                    <i class="material-icons prefix md-prefix">mail</i>
+                    <textarea id="kegiatan" type="text" class="materialize-textarea validate" name="kegiatan" required></textarea>
                     <?php
-                    if (isset($_SESSION['nip'])) {
-                        $nip = $_SESSION['nip'];
-                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $nip . '</div>';
-                        unset($_SESSION['nip']);
-                    }
-                    if (isset($_SESSION['errNotFound'])) {
-                        $errNotFound = $_SESSION['errNotFound'];
-                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $errNotFound . '</div>';
-                        unset($_SESSION['errNotFound']);
+                    if (isset($_SESSION['kegiatan'])) {
+                        $kegiatan = $_SESSION['kegiatan'];
+                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $kegiatan . '</div>';
+                        unset($_SESSION['kegiatan']);
                     }
                     ?>
-                    <label for="nip">NIP</label>
+                    <label for="kegiatan">Kegiatan</label>
                 </div>
                 <div class="input-field col s6">
-                    <i class="material-icons prefix md-prefix">mail_outline</i><label>Jenis Cuti</label><br />
-                    <div class="input-field col s11 right">
-                        <select class="browser-default validate" name="jenis_cuti" id="jenis_cuti" required>
-                            <option value=""> - Pilih Jenis Cuti - </option>
-                            <option value="Izin">Izin</option>
-                            <option value="Sakit">Sakit</option>
-                            <option value="Kehamilan">Kehamilan</option>
-                            <option value="Pernikahan">Pernikahan</option>
-                            <option value="Keagamaan">Keagamaan</option>
-                            <option value="Kedukaan Kematian">Kedukaan Kematian</option>
-                            <option value="Pendidikan">Pendidikan</option>
-                            <option value="Konpensasi">Konpensasi</option>
-                        </select>
-                    </div>
+                    <i class="material-icons prefix md-prefix">place</i>
+                    <textarea id="tempat" type="text" class="materialize-textarea validate" name="tempat" required></textarea>
                     <?php
-                    if (isset($_SESSION['jenis_cuti'])) {
-                        $jenis_cuti = $_SESSION['jenis_cuti'];
-                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $jenis_cuti . '</div>';
-                        unset($_SESSION['jenis_cuti']);
+                    if (isset($_SESSION['tempat'])) {
+                        $tempat = $_SESSION['tempat'];
+                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $tempat . '</div>';
+                        unset($_SESSION['tempat']);
                     }
                     ?>
+                    <label for="tempat">Tempat</label>
                 </div>
                 <div class="input-field col s6">
                     <i class="material-icons prefix md-prefix">event</i>
@@ -184,6 +181,30 @@ if (empty($_SESSION['admin'])) {
                     }
                     ?>
                     <label for="tanggal_selesai">Tanggal Selesai</label>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix md-prefix">people</i>
+                    <textarea id="pelaksana" type="text" class="materialize-textarea validate" name="pelaksana" required></textarea>
+                    <?php
+                    if (isset($_SESSION['pelaksana'])) {
+                        $pelaksana = $_SESSION['pelaksana'];
+                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $pelaksana . '</div>';
+                        unset($_SESSION['pelaksana']);
+                    }
+                    ?>
+                    <label for="pelaksana">Pelaksana</label>
+                </div>
+                <div class="input-field col s6">
+                    <i class="material-icons prefix md-prefix">people</i>
+                    <textarea id="peserta" type="text" class="materialize-textarea validate" name="peserta" required></textarea>
+                    <?php
+                    if (isset($_SESSION['peserta'])) {
+                        $peserta = $_SESSION['peserta'];
+                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $peserta . '</div>';
+                        unset($_SESSION['peserta']);
+                    }
+                    ?>
+                    <label for="peserta">Peserta</label>
                 </div>
         </div>
         <!-- Row in form END -->

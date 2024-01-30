@@ -54,9 +54,9 @@ if (empty($_SESSION['admin'])) {
             } else {
 
                 //jika form valid -> edit data
-                $isAdded = !is_null($pegawaiService->edit($pegawai));
+                $isEdited = !is_null($pegawaiService->edit($pegawai));
 
-                if ($isAdded) {
+                if ($isEdited) {
                     $_SESSION['succEdit'] = 'SUKSES! Data berhasil diedit';
                     header("Location: ./admin.php?page=$page");
                     die();

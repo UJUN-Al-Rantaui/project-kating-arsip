@@ -5,7 +5,7 @@ CREATE TABLE tbl_surat_cuti (
     tanggal_mulai DATE,
     tanggal_selesai DATE,
     CONSTRAINT pk_kode_cuti PRIMARY KEY (kode_cuti),
-    FOREIGN KEY (nip) REFERENCES tbl_pegawai (nip) ON DELETE NO ACTION ON UPDATE RESTRICT
+    FOREIGN KEY (nip) REFERENCES tbl_pegawai (nip) ON DELETE CASCADE ON UPDATE CASCADE
 );
 
 INSERT INTO tbl_surat_cuti(

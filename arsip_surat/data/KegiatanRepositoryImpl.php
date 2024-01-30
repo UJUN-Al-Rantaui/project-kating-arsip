@@ -131,7 +131,7 @@ class KegiatanRepositoryImpl implements KegiatanRepository {
         return $isDeleted;
     }
     public function search(string $keyWord,int $current=0, int $limit=15): array {
-        if(is_numeric($keyWord)) $keyWordInt = (int)$keyWord;
+        $keyWordInt = is_numeric($keyWord) ? (int)$keyWord : 0;
         $keyWord = "%".$keyWord."%";
 
         $connection = Helper\getConnection();

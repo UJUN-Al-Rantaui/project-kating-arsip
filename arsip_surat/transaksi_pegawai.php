@@ -162,27 +162,28 @@
                             <tbody>';
 
                             //script untuk mencari data
-                            $pegawaiArray =  $pegawaiService->search($cari, limit: 15);
+                            $pegawaiArray =  $pegawaiService->search($cari, $curr, $limit);
                             if(count($pegawaiArray) > 0){
                                 $no = 1;
                                 foreach($pegawaiArray as $pegawai){
                                   echo '
                                   <tr>
-                                    <td>'.$pegawai->getNip().'</td>
-                                    <td>'.$pegawai->getNama().'</td>
+                                    <td>'.$no.'</td>
+                                    <td>'.$pegawai->getNama().'<hr>'.$pegawai->getNip().'</td>
                                     <td>'.$pegawai->getTelepon().'</td>
                                     <td>'.$pegawai->getAlamat().'</td>
-                                    <td>    
-                                        <a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&nip='.$pegawai->getNip().'">
-                                            <i class="material-icons">edit</i> EDIT</a>
-                                        <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page='.$page.'&act=disp&nip='.$pegawai->getNip().'" style="display:none;">
-                                            <i class="material-icons">description</i> DISP</a>
-                                        <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&nip='.$pegawai->getNip().'" target="_blank">
-                                            <i class="material-icons">print</i> PRINT</a>
-                                        <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&nip='.$pegawai->getNip().'">
-                                            <i class="material-icons">delete</i> DEL</a>
+                                    <td>';
+                                        if($_SESSION['admin'] != 2){
+                                            echo '<button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button>';
+                                        } else {
+                                        echo '<a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&nip='.$pegawai->getNip().'">
+                                                    <i class="material-icons">edit</i> EDIT</a>
+                                                <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&nip='.$pegawai->getNip().'">
+                                                    <i class="material-icons">delete</i> DEL</a>';
+                                        } echo '
                                         </td>
                                     </tr>';
+                                    $no++;
                                 }
                             } else {
                                 echo '<tr><td colspan="5"><center><p class="add">Tidak ada data yang ditemukan</p></center></td></tr>';
@@ -254,7 +255,7 @@
                                 <tbody>';
 
                                 //script untuk menampilkan data
-                                $pegawaiArray =  $pegawaiService->search("", limit: 15);
+                                $pegawaiArray =  $pegawaiService->search("", $curr, $limit);
                                 if(count($pegawaiArray) > 0){
                                     $no = 1;
                                     foreach($pegawaiArray as $pegawai){
@@ -264,17 +265,17 @@
                                         <td>'.$pegawai->getNama().'<hr>'.$pegawai->getNip().'</td>
                                         <td>'.$pegawai->getTelepon().'</td>
                                         <td>'.$pegawai->getAlamat().'</td>
-                                        <td>
-                                            <a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&nip='.$pegawai->getNip().'">
-                                                <i class="material-icons">edit</i> EDIT</a>
-                                            <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page='.$page.'&act=disp&nip='.$pegawai->getNip().'" style="display:none;">
-                                                <i class="material-icons">description</i> DISP</a>
-                                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&nip='.$pegawai->getNip().'" target="_blank" style="display:none;">
-                                                <i class="material-icons">print</i> PRINT</a>
-                                            <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&nip='.$pegawai->getNip().'">
-                                                <i class="material-icons">delete</i> DEL</a>
-                                        </td>
-                                    </tr>';
+                                        <td>';
+                                            if($_SESSION['admin'] != 2){
+                                                echo '<button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button>';
+                                            } else {
+                                            echo '<a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&nip='.$pegawai->getNip().'">
+                                                        <i class="material-icons">edit</i> EDIT</a>
+                                                    <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&nip='.$pegawai->getNip().'">
+                                                        <i class="material-icons">delete</i> DEL</a>';
+                                            } echo '
+                                            </td>
+                                        </tr>';
                                     $no++;
                                 }
                             } else {

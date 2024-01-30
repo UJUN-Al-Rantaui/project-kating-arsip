@@ -73,17 +73,18 @@ class Kegiatan
         return $this->pelaksana;
     }
 
-    public function setPelaksana(array | string $pelaksana)
+    public function setPelaksana(array | string $pelaksana, string $separator=":")
     {
         if(is_string($pelaksana)) {
-            $this->pelaksana = explode(":", $pelaksana);
+            $this->pelaksana = explode($separator, $pelaksana);
+        } else {
+            $this->pelaksana = $pelaksana;
         }
-        $this->pelaksana = $pelaksana;
     }
 
     public function getPelaksanaString(string $separator=":"): string {
         return join($separator, $this->pelaksana);
-    }
+    } 
 
     public function getPeserta(): array
     {
@@ -94,11 +95,12 @@ class Kegiatan
         return join($separator, $this->peserta);
     }
 
-    public function setPeserta(array $peserta)
+    public function setPeserta(array | string $peserta, string $separator= ":")
     {
         if(is_string($peserta)) {
-            $this->peserta = explode(":", $peserta);
+            $this->peserta = explode($separator, $peserta);
+        } else {
+            $this->peserta = $peserta;
         }
-        $this->peserta = $peserta;
     }
 }

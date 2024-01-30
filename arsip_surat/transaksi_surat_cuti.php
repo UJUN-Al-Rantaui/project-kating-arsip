@@ -163,7 +163,7 @@
                             <tbody>';
 
                             //script untuk mencari data
-                            $suratCutiArray =  $suratCutiService->search($cari, limit: 15);
+                            $suratCutiArray =  $suratCutiService->search($cari, $curr, $limit);
                             $dateFormat= "d-m-Y";
                             if(count($suratCutiArray) > 0){
                                 $no = 1;
@@ -176,16 +176,17 @@
                                     <td>'.$suratCuti->getJenisCuti().'</td>
                                     <td>'.$suratCuti->getTanggalMulai()->format($dateFormat).'<hr>'.$suratCuti->getTanggalSelesai()->format($dateFormat).'</td>
                                     <td>    
-                                        <a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&nip='.$suratCuti->getKodeCuti().'">
+                                        <a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&kode_cuti='.$suratCuti->getKodeCuti().'">
                                             <i class="material-icons">edit</i> EDIT</a>
-                                        <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page='.$page.'&act=disp&nip='.$suratCuti->getKodeCuti().'" style="display:none;">
+                                        <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page='.$page.'&act=disp&kode_cuti='.$suratCuti->getKodeCuti().'" style="display:none;">
                                             <i class="material-icons">description</i> DISP</a>
-                                        <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&nip='.$suratCuti->getKodeCuti().'" target="_blank">
+                                        <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&kode_cuti='.$suratCuti->getKodeCuti().'" target="_blank" style="display: none;">
                                             <i class="material-icons">print</i> PRINT</a>
-                                        <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&nip='.$suratCuti->getKodeCuti().'">
+                                        <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&kode_cuti='.$suratCuti->getKodeCuti().'">
                                             <i class="material-icons">delete</i> DEL</a>
                                         </td>
                                     </tr>';
+                                    $no++;
                                 }
                             } else {
                                 echo '<tr><td colspan="5"><center><p class="add">Tidak ada data yang ditemukan</p></center></td></tr>';
@@ -259,7 +260,7 @@
 
                                 //script untuk menampilkan data
                                 $dateFormat = "d-m-Y";
-                                $suratCutiArray =  $suratCutiService->search("", limit: 15);
+                                $suratCutiArray =  $suratCutiService->search("", $curr, $limit);
                                 if(count($suratCutiArray) > 0){
                                     $no = 1;
                                     foreach($suratCutiArray as $suratCuti){
