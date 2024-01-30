@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 29, 2024 at 12:54 PM
+-- Generation Time: Jan 30, 2024 at 10:43 AM
 -- Server version: 8.0.30
 -- PHP Version: 8.1.10
 
@@ -37,13 +37,6 @@ CREATE TABLE `tbl_disposisi` (
   `id_surat` int NOT NULL,
   `id_user` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_disposisi`
---
-
-INSERT INTO `tbl_disposisi` (`id_disposisi`, `tujuan`, `isi_disposisi`, `sifat`, `batas_waktu`, `catatan`, `id_surat`, `id_user`) VALUES
-(2, 6, 'reyery', 'Penting', '2024-01-04', '5ey5ey', 7, 11);
 
 -- --------------------------------------------------------
 
@@ -88,15 +81,6 @@ CREATE TABLE `tbl_kegiatan` (
   `peserta` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `tbl_kegiatan`
---
-
-INSERT INTO `tbl_kegiatan` (`id`, `kegiatan`, `tanggal_mulai`, `tanggal_selesai`, `tempat`, `pelaksana`, `peserta`) VALUES
-(2, 'Makan-Makan Minum Bahera', '2024-01-01', '2023-12-15', 'KAlimantan Selatan', 'ujun:ozon:ujunun:taichou:unjun', 'Amang:syarwani:ipul:acad'),
-(3, 'Tahi kucing babulu', '2024-01-01', '2023-12-15', 'KAlimantan Selatan', 'ujun:ozon:ujunun:taichou:unjun', 'Amang:syarwani:ipul:acad'),
-(4, 'Tahi kucing babulu', '2024-01-01', '2023-12-15', 'KAlimantan Selatan', 'ujun:ozon:ujunun:taichou:unjun', 'Amang:syarwani:ipul:acad');
-
 -- --------------------------------------------------------
 
 --
@@ -123,17 +107,6 @@ CREATE TABLE `tbl_pegawai` (
   `telepon` varchar(20) NOT NULL,
   `alamat` text NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
-
---
--- Dumping data for table `tbl_pegawai`
---
-
-INSERT INTO `tbl_pegawai` (`nip`, `nama`, `telepon`, `alamat`) VALUES
-('0123', 'Ozon', '08125536481', 'POP_OS'),
-('01234', 'ubuntu', '08125363792', 'Handil'),
-('12345654323', 'UJUN', '6285686', 'xubuntu'),
-('1234565432908123', 'Muhammad Junaidi', '6285686', 'Gentoo'),
-('321', 'Muhammad Junaidi', '098548', 'tqwdyqwdaus');
 
 -- --------------------------------------------------------
 
@@ -170,16 +143,6 @@ CREATE TABLE `tbl_surat_cuti` (
   `tanggal_selesai` date DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 
---
--- Dumping data for table `tbl_surat_cuti`
---
-
-INSERT INTO `tbl_surat_cuti` (`kode_cuti`, `nip`, `jenis_cuti`, `tanggal_mulai`, `tanggal_selesai`) VALUES
-(16, '0123', 'Pernikahan', '2020-01-10', '2024-01-27'),
-(21, '01234', 'Pendidikan', '2024-01-01', '2024-01-31'),
-(24, '01234', 'Keagamaan', '2024-01-01', '2024-01-31'),
-(25, '321', 'Sakit', '2024-01-10', '2024-01-10');
-
 -- --------------------------------------------------------
 
 --
@@ -187,10 +150,10 @@ INSERT INTO `tbl_surat_cuti` (`kode_cuti`, `nip`, `jenis_cuti`, `tanggal_mulai`,
 -- (See below for the actual view)
 --
 CREATE TABLE `tbl_surat_cuti_view` (
-`kode_cuti` int
-,`nip` varchar(20)
+`jenis_cuti` varchar(100)
+,`kode_cuti` int
 ,`nama` varchar(100)
-,`jenis_cuti` varchar(100)
+,`nip` varchar(20)
 ,`tanggal_mulai` date
 ,`tanggal_selesai` date
 );
@@ -215,13 +178,6 @@ CREATE TABLE `tbl_surat_keluar` (
   `id_user` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
 
---
--- Dumping data for table `tbl_surat_keluar`
---
-
-INSERT INTO `tbl_surat_keluar` (`id_surat`, `no_agenda`, `tujuan`, `no_surat`, `isi`, `kode`, `tgl_surat`, `tgl_catat`, `file`, `keterangan`, `id_user`) VALUES
-(9, 1, 'sdf', 'fsda', 'fasf', 'fasdf', '2023-12-03', '2023-12-09', '', 'asdf', 7);
-
 -- --------------------------------------------------------
 
 --
@@ -240,13 +196,6 @@ CREATE TABLE `tbl_surat_masuk` (
   `keterangan` varchar(250) NOT NULL,
   `id_user` tinyint NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=latin1;
-
---
--- Dumping data for table `tbl_surat_masuk`
---
-
-INSERT INTO `tbl_surat_masuk` (`id_surat`, `no_surat`, `asal_surat`, `tujuan_surat`, `perihal`, `tgl_surat`, `tgl_diterima`, `file`, `keterangan`, `id_user`) VALUES
-(7, '867', 'Jamal', 4, 'Ucup Bermain DI nebula', '2023-12-08', '2023-12-08', '', 'Langit indah', 7);
 
 -- --------------------------------------------------------
 
@@ -269,7 +218,8 @@ CREATE TABLE `tbl_user` (
 
 INSERT INTO `tbl_user` (`id_user`, `username`, `password`, `nama`, `nip`, `admin`) VALUES
 (1, 'administrator', '827ccb0eea8a706c4c34a16891f84e7b', 'Administrator', '123456789', 1),
-(11, 'junaidi', 'a708cb9bebf84a140d408a8251450091', 'junaidi', '12345654321', 2);
+(11, 'junaidi', 'a708cb9bebf84a140d408a8251450091', 'junaidi', '12345654321', 2),
+(12, 'ujun20', 'a9e213cc95eeb712fec1874ac0ddb036', 'UJUN', '0123456789', 4);
 
 -- --------------------------------------------------------
 
@@ -359,7 +309,7 @@ ALTER TABLE `tbl_disposisi`
 -- AUTO_INCREMENT for table `tbl_kegiatan`
 --
 ALTER TABLE `tbl_kegiatan`
-  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
+  MODIFY `id` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
 
 --
 -- AUTO_INCREMENT for table `tbl_klasifikasi`
@@ -371,7 +321,7 @@ ALTER TABLE `tbl_klasifikasi`
 -- AUTO_INCREMENT for table `tbl_surat_cuti`
 --
 ALTER TABLE `tbl_surat_cuti`
-  MODIFY `kode_cuti` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=26;
+  MODIFY `kode_cuti` int NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
 
 --
 -- AUTO_INCREMENT for table `tbl_surat_keluar`
@@ -389,7 +339,7 @@ ALTER TABLE `tbl_surat_masuk`
 -- AUTO_INCREMENT for table `tbl_user`
 --
 ALTER TABLE `tbl_user`
-  MODIFY `id_user` tinyint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=12;
+  MODIFY `id_user` tinyint NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=13;
 
 --
 -- Constraints for dumped tables
@@ -399,7 +349,7 @@ ALTER TABLE `tbl_user`
 -- Constraints for table `tbl_surat_cuti`
 --
 ALTER TABLE `tbl_surat_cuti`
-  ADD CONSTRAINT `tbl_surat_cuti_ibfk_1` FOREIGN KEY (`nip`) REFERENCES `tbl_pegawai` (`nip`) ON UPDATE RESTRICT;
+  ADD CONSTRAINT `tbl_surat_cuti_ibfk_1` FOREIGN KEY (`nip`) REFERENCES `tbl_pegawai` (`nip`) ON DELETE CASCADE ON UPDATE CASCADE;
 COMMIT;
 
 /*!40101 SET CHARACTER_SET_CLIENT=@OLD_CHARACTER_SET_CLIENT */;
