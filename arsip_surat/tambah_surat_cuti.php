@@ -44,7 +44,8 @@ if (empty($_SESSION['admin'])) {
                 $_SESSION['jenis_cuti'] = 'Form Jenis Cuti hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
                 echo '<script language="javascript">window.history.back();</script>';
             } elseif (is_null($pegawaiService->findByNip($suratCuti->getNip()))) {
-                $_SESSION['errNotFound'] = "Tidak ada NIP yang sesuai dengan pegawai yang sudah ada";
+                $_SESSION['errNotFound'] = "NIP Harus sesuai dengan pegawai yang terdaftar";
+                echo '<script language="javascript">window.history.back();</script>';
             } elseif(!preg_match("/^[0-9.-]*$/", $suratCuti->getTanggalMulai()->format('d-m-Y'))){
                 $_SESSION['tanggal_mulai'] = 'Form Tanggal Mulai hanya boleh mengandung angka dan minus(-)';
                 echo '<script language="javascript">window.history.back();</script>';

@@ -52,11 +52,6 @@
         				                    <td width="86%">'.$row['no_agenda'].'</td>
         				                </tr>
         				                <tr>
-        				                    <td width="13%">Kode Klasifikasi</td>
-        				                    <td width="1%">:</td>
-        				                    <td width="86%">'.$row['kode'].'</td>
-        				                </tr>
-        				                <tr>
         				                    <td width="13%">No. Isi</td>
         				                    <td width="1%">:</td>
         				                    <td width="86%">'.$row['isi'].'</td>

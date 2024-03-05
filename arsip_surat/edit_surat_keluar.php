@@ -10,7 +10,7 @@
 
             //validasi form kosong
             if($_REQUEST['no_agenda'] == "" || $_REQUEST['no_surat'] == "" || $_REQUEST['tujuan'] == "" || $_REQUEST['isi'] == ""
-                || $_REQUEST['kode'] == "" || $_REQUEST['tgl_surat'] == ""  || $_REQUEST['keterangan'] == ""){
+                || $_REQUEST['tgl_surat'] == ""  || $_REQUEST['keterangan'] == ""){
                     $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
                     echo '<script language="javascript">window.history.back();</script>';
             } else {
@@ -20,8 +20,6 @@
                 $no_surat = $_REQUEST['no_surat'];
                 $tujuan = $_REQUEST['tujuan'];
                 $isi = $_REQUEST['isi'];
-                $kode = substr($_REQUEST['kode'],0,30);
-                $nkode = trim($kode);
                 $tgl_surat = $_REQUEST['tgl_surat'];
                 $keterangan = $_REQUEST['keterangan'];
                 $id_user = $_SESSION['id_user'];
@@ -46,11 +44,6 @@
                                 $_SESSION['isik'] = 'Form Isi Ringkas hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-), garis miring(/), kurung(), underscore(_), dan(&) persen(%) dan at(@)';
                                 echo '<script language="javascript">window.history.back();</script>';
                             } else {
-
-                                if(!preg_match("/^[a-zA-Z0-9., ]*$/", $nkode)){
-                                    $_SESSION['kodek'] = 'Form Kode Klasifikasi hanya boleh mengandung karakter huruf, angka, spasi, titik(.) dan koma(,)';
-                                    echo '<script language="javascript">window.history.back();</script>';
-                                } else {
 
                                     if(!preg_match("/^[0-9.-]*$/", $tgl_surat)){
                                         $_SESSION['tgl_suratk'] = 'Form Tanggal Surat hanya boleh mengandung angka dan minus(-)';
@@ -93,7 +86,7 @@
 
                                                             move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
 
-                                                            $query = mysqli_query($config, "UPDATE tbl_surat_keluar SET no_agenda='$no_agenda',tujuan='$tujuan',no_surat='$no_surat',isi='$isi',kode='$nkode',tgl_surat='$tgl_surat',file='$nfile',keterangan='$keterangan',id_user='$id_user' WHERE id_surat='$id_surat'");
+                                                            $query = mysqli_query($config, "UPDATE tbl_surat_keluar SET no_agenda='$no_agenda',tujuan='$tujuan',no_surat='$no_surat',isi='$isi',tgl_surat='$tgl_surat',file='$nfile',keterangan='$keterangan',id_user='$id_user' WHERE id_surat='$id_surat'");
 
                                                             if($query == true){
                                                                 $_SESSION['succEdit'] = 'SUKSES! Data berhasil diupdate';
@@ -108,7 +101,7 @@
                                                             //jika file kosong akan mengeksekusi script dibawah ini
                                                             move_uploaded_file($_FILES['file']['tmp_name'], $target_dir.$nfile);
 
-                                                            $query = mysqli_query($config, "UPDATE tbl_surat_keluar SET no_agenda='$no_agenda',tujuan='$tujuan',no_surat='$no_surat',isi='$isi',kode='$nkode',tgl_surat='$tgl_surat',file='$nfile',keterangan='$keterangan',id_user='$id_user' WHERE id_surat='$id_surat'");
+                                                            $query = mysqli_query($config, "UPDATE tbl_surat_keluar SET no_agenda='$no_agenda',tujuan='$tujuan',no_surat='$no_surat',isi='$isi',tgl_surat='$tgl_surat',file='$nfile',keterangan='$keterangan',id_user='$id_user' WHERE id_surat='$id_surat'");
 
                                                             if($query == true){
                                                                 $_SESSION['succEdit'] = 'SUKSES! Data berhasil diupdate';
@@ -132,7 +125,7 @@
                                                 //jika form file kosong akan mengeksekusi script dibawah ini
                                                 $id_surat = $_REQUEST['id_surat'];
 
-                                                $query = mysqli_query($config, "UPDATE tbl_surat_keluar SET no_agenda='$no_agenda',tujuan='$tujuan',no_surat='$no_surat',isi='$isi',kode='$nkode',tgl_surat='$tgl_surat',keterangan='$keterangan',id_user='$id_user' WHERE id_surat='$id_surat'");
+                                                $query = mysqli_query($config, "UPDATE tbl_surat_keluar SET no_agenda='$no_agenda',tujuan='$tujuan',no_surat='$no_surat',isi='$isi',tgl_surat='$tgl_surat',keterangan='$keterangan',id_user='$id_user' WHERE id_surat='$id_surat'");
 
                                                 if($query == true){
                                                     $_SESSION['succEdit'] = 'SUKSES! Data berhasil diupdate';
@@ -145,7 +138,6 @@
                                             }
                                         }
                                     }
-                                }
                             }
                         }
                     }
@@ -154,8 +146,8 @@
         } else {
 
             $id_surat = mysqli_real_escape_string($config, $_REQUEST['id_surat']);
-            $query = mysqli_query($config, "SELECT id_surat, no_agenda, tujuan, no_surat, isi, kode, tgl_surat, file, keterangan, id_user FROM tbl_surat_keluar WHERE id_surat='$id_surat'");
-            list($id_surat, $no_agenda, $tujuan, $no_surat, $isi, $kode, $tgl_surat, $file, $keterangan, $id_user) = mysqli_fetch_array($query);
+            $query = mysqli_query($config, "SELECT id_surat, no_agenda, tujuan, no_surat, isi, tgl_surat, file, keterangan, id_user FROM tbl_surat_keluar WHERE id_surat='$id_surat'");
+            list($id_surat, $no_agenda, $tujuan, $no_surat, $isi, $tgl_surat, $file, $keterangan, $id_user) = mysqli_fetch_array($query);
             if($_SESSION['id_user'] != $id_user AND $_SESSION['admin'] != 2){
                 echo '<script language="javascript">
                         window.alert("ERROR! Anda tidak memiliki hak akses untuk mengedit data ini");
@@ -228,18 +220,6 @@
                                         }
                                     ?>
                                 <label for="no_agenda">Nomor Agenda</label>
-                            </div>
-                            <div class="input-field col s6">
-                                <i class="material-icons prefix md-prefix">bookmark</i>
-                                <input id="kode" type="text" class="validate" name="kode" value="<?php echo $kode ;?>" required>
-                                    <?php
-                                        if(isset($_SESSION['kodek'])){
-                                            $kodek = $_SESSION['kodek'];
-                                            echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">'.$kodek.'</div>';
-                                            unset($_SESSION['kodek']);
-                                        }
-                                    ?>
-                                <label for="kode">Kode Klasifikasi</label>
                             </div>
                             <div class="input-field col s6">
                                 <i class="material-icons prefix md-prefix">place</i>

@@ -197,7 +197,7 @@
                 <div class="col s12 m4">
                     <div class="card blue darken-1">
                         <div class="card-content">
-                            <span class="card-title white-text"><i class="material-icons md-36">person</i> Jumlah Kegiatan</span>
+                            <span class="card-title white-text"><i class="material-icons md-36">description</i> Jumlah Kegiatan</span>
                             <?php echo '<h5 class="white-text link">'.$countKegiatan.' Kegiatan</h5>'; ?>
                         </div>
                     </div>

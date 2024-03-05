@@ -89,7 +89,7 @@ if (empty($_SESSION['admin'])) {
                     <div class="nav-wrapper blue-grey darken-1">
                         <ul class="left">
                             <li class="waves-effect waves-light"><a href="?page=<?php echo $page ?>&act=add" class="judul"><i
-                                        class="material-icons">mail</i> Edit Kegiatan</a></li>
+                                        class="material-icons">edit</i> Edit Kegiatan</a></li>
                         </ul>
                     </div>
                 </nav>
@@ -141,7 +141,7 @@ if (empty($_SESSION['admin'])) {
 
                 <!-- Row in form START -->
                 <div class="input-field col s6">
-                    <i class="material-icons prefix md-prefix">mail</i>
+                    <i class="material-icons prefix md-prefix">description</i>
                     <textarea id="kegiatan" class="materialize-textarea validate" name="kegiatan" required><?php echo  $kegiatan->getKegiatan()?></textarea>
                     <?php
                     if (isset($_SESSION['kegiatan'])) {

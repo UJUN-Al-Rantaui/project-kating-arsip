@@ -63,7 +63,7 @@ if (empty($_SESSION['admin'])) {
                             <div class="col m7">
                                 <ul class="left">
                                     <li class="waves-effect waves-light hide-on-small-only"><a href="?page=<?php echo $page ?>"
-                                            class="judul"><i class="material-icons">mail</i> Kegiatan</a></li>
+                                            class="judul"><i class="material-icons">description</i> Kegiatan</a></li>
                                     <!-- Tombol Tambah Surat Masuk -->
                                     <?php //if($_SESSION['admin'] == 2 )  { ?>
                                     <li class="waves-effect waves-light">
