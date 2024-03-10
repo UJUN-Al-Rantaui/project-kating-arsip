@@ -147,8 +147,7 @@
                         <table class="bordered" id="tbl" width="100%">
                             <thead class="blue lighten-4">
                                 <tr>
-                                    <th width="3%">No</th>
-                                    <th width="5%">Kode</th>
+                                    <th width="8%">No</th>
                                     <th width="21%">Isi Ringkas</th>
                                     <th width="18%">Tujuan Surat</th>
                                     <th width="15%">Nomor Surat</th>
@@ -165,7 +164,6 @@
                                  echo '
                                     <tr>
                                         <td>'.$row['no_agenda'].'</td>
-                                        <td>'.$row['kode'].'</td>
                                         <td>'.$row['isi'].'</td>
                                         <td>'.$row['tujuan'].'</td>
                                         <td>'.$row['no_surat'].'</td>

@@ -25,7 +25,7 @@
                     $curr = ($pg - 1) * $limit;
                 }
 
-                echo '
+                ?>
                     <!-- Row Start -->
                     <div class="row">
                         <!-- Secondary Nav START -->
@@ -49,6 +49,7 @@
                     <!-- Row form Start -->
                     <div class="row jarak-form">';
 
+                    <?php
                     if(isset($_REQUEST['submit'])){
 
                         $dari_tanggal = $_REQUEST['dari_tanggal'];
@@ -61,7 +62,8 @@
 
                         $query = mysqli_query($config, "SELECT * FROM tbl_surat_keluar WHERE tgl_catat BETWEEN '$dari_tanggal' AND '$sampai_tanggal' ORDER By id_surat DESC LIMIT 10");
 
-                        echo '<!-- Row form Start -->
+                        ?>
+                        <!-- Row form Start -->
                             <div class="row jarak-form black-text">
                                 <form class="col s12" method="post" action="">
                                     <div class="input-field col s3">
@@ -84,10 +86,11 @@
                             <!-- Row form END -->
 
                             <div class="row agenda">
-                                <div class="col s12"><p class="warna agenda">Galeri file surat keluar antara tanggal <strong>'.indoDate($dari_tanggal).'</strong> sampai dengan tanggal <strong>'.indoDate($sampai_tanggal).'</strong></p>
+                                <div class="col s12"><p class="warna agenda">Galeri file surat keluar antara tanggal <strong><?=indoDate($dari_tanggal)?></strong> sampai dengan tanggal <strong>'.indoDate($sampai_tanggal).'</strong></p>
                                 </div>
-                            </div>';
+                            </div>
 
+                            <?php
                             if(mysqli_num_rows($query) > 0){
                                 while($row = mysqli_fetch_array($query)){
                                 if(empty($row['file'])){

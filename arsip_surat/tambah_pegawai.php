@@ -25,9 +25,12 @@ if (empty($_SESSION['admin'])) {
 
     if (isset($_REQUEST['submit'])) {
         //validasi form kosong
-        if ($_REQUEST['nip'] == "" || $_REQUEST['nama'] == "" || $_REQUEST['telepon'] == "" || $_REQUEST['alamat'] == "") {
+        if ($_REQUEST['nip'] == ""
+                || $_REQUEST['nama'] == "" 
+                || $_REQUEST['telepon'] == "" 
+                || $_REQUEST['alamat'] == "") {
             $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
-            echo '<script language="javascript">window.history.back();</script>';
+            openPreviousPage();
         } else {
 
             $pegawai = new Pegawai(
@@ -41,19 +44,25 @@ if (empty($_SESSION['admin'])) {
 
             if (!preg_match("/^[0-9]*$/", $pegawai->getNip())) {
                 $_SESSION['nip'] = 'Form NIP hanya boleh mengandung karakter angka';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
+            } elseif (!preg_match("/\b.{18}\b/", $pegawai->getNip())) {
+                $_SESSION['nipLengthErr'] = 'Panjang NIP tidak boleh kurang dari atau lebih dari 18';
+                openPreviousPage();
             } elseif (!preg_match("/^[a-zA-Z0-9.,() \/ -]*$/", $pegawai->getNama())) {
                 $_SESSION['namaErr'] = 'Form Nama hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
             } elseif (!preg_match("/^[0-9]*$/", $pegawai->getTelepon())) {
                 $_SESSION['telepon'] = 'Form No. Telepon hanya boleh mengandung karakter angka 0 sampai 9';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
+            } elseif (!preg_match("/\b.{10,15}\b/", $pegawai->getTelepon())) {
+                $_SESSION['telepon'] = 'Panjang No. Telepon hanya boleh 10 sampai 15';
+                openPreviousPage();
             } elseif (!preg_match("/^[a-zA-Z0-9.,_()%&@\/\r\n -]*$/", $pegawai->getAlamat())) {
                 $_SESSION['alamat'] = 'Form Alamat hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-), garis miring(/), kurung(), underscore(_), dan(&) persen(%) dan at(@)';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
             } elseif (!is_null($pegawaiService->findByNip($pegawai->getNip()))) {
                 $_SESSION['errDup'] = 'NIP sudah terpakai, gunakan yang lain!';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
             } else {
 
                 //jika form valid -> tambahkan data
@@ -65,7 +74,7 @@ if (empty($_SESSION['admin'])) {
                     die();
                 } else {
                     $_SESSION['errQ'] = 'ERROR! Ada masalah dengan query';
-                    echo '<script language="javascript">window.history.back();</script>';
+                    openPreviousPage();
                 }
             }
         }
@@ -78,7 +87,7 @@ if (empty($_SESSION['admin'])) {
                 <nav class="secondary-nav">
                     <div class="nav-wrapper blue-grey darken-1">
                         <ul class="left">
-                            <li class="waves-effect waves-light"><a href="?page=<?php echo $page ?>&act=add" class="judul"><i
+                            <li class="waves-effect waves-light"><a href="?page=<?=$page?>&act=add" class="judul"><i
                                         class="material-icons">person</i> Tambah Data Pegawai</a></li>
                         </ul>
                     </div>
@@ -121,7 +130,7 @@ if (empty($_SESSION['admin'])) {
         <div class="row jarak-form">
 
             <!-- Form START -->
-            <form class="col s12" method="POST" action="?page=<?php echo $page ?>&act=add" enctype="multipart/form-data">
+            <form class="col s12" method="POST" action="?page=<?=$page?>&act=add" enctype="multipart/form-data">
 
                 <!-- Row in form START -->
                 <div class="input-field col s6">
@@ -132,6 +141,11 @@ if (empty($_SESSION['admin'])) {
                         $nip = $_SESSION['nip'];
                         echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $nip . '</div>';
                         unset($_SESSION['nip']);
+                    }
+                    if (isset($_SESSION['nipLengthErr'])) {
+                        $nipLengthErr = $_SESSION['nipLengthErr'];
+                        echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $nipLengthErr . '</div>';
+                        unset($_SESSION['nipLengthErr']);
                     }
                     if (isset($_SESSION['errDup'])) {
                         $errDup = $_SESSION['errDup'];
@@ -187,7 +201,7 @@ if (empty($_SESSION['admin'])) {
                         class="material-icons">done</i></button>
             </div>
             <div class="col 6">
-                <a href="?page=<?php echo $page ?>" class="btn-large deep-orange waves-effect waves-light">BATAL <i
+                <a href="?page=<?=$page?>" class="btn-large deep-orange waves-effect waves-light">BATAL <i
                         class="material-icons">clear</i></a>
             </div>
         </div>

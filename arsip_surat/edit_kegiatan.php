@@ -141,7 +141,7 @@ if (empty($_SESSION['admin'])) {
 
                 <!-- Row in form START -->
                 <div class="input-field col s6">
-                    <i class="material-icons prefix md-prefix">description</i>
+                    <i class="material-icons prefix md-prefix">assignment</i>
                     <textarea id="kegiatan" class="materialize-textarea validate" name="kegiatan" required><?php echo  $kegiatan->getKegiatan()?></textarea>
                     <?php
                     if (isset($_SESSION['kegiatan'])) {

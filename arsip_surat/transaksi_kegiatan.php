@@ -20,11 +20,8 @@ if (empty($_SESSION['admin'])) {
             case 'edit':
                 include "edit_kegiatan.php";
                 break;
-            case 'disp':
-                include "disposisi.php";
-                break;
             case 'print':
-                include "cetak_disposisi.php";
+                include "cetak_kegiatan.php";
                 break;
             case 'del':
                 include "hapus_kegiatan.php";
@@ -63,14 +60,14 @@ if (empty($_SESSION['admin'])) {
                             <div class="col m7">
                                 <ul class="left">
                                     <li class="waves-effect waves-light hide-on-small-only"><a href="?page=<?php echo $page ?>"
-                                            class="judul"><i class="material-icons">description</i> Kegiatan</a></li>
+                                            class="judul"><i class="material-icons">assignment</i> Kegiatan</a></li>
                                     <!-- Tombol Tambah Surat Masuk -->
-                                    <?php //if($_SESSION['admin'] == 2 )  { ?>
+                                    <?php //if($_SESSION['admin'] == 2 )  {   ?>
                                     <li class="waves-effect waves-light">
                                         <a href="?page=<?php echo $page ?>&act=add"><i
                                                 class="material-icons md-24">add_circle</i> Tambah Data</a>
                                     </li>
-                                    <?php //} ?>
+                                    <?php //}   ?>
 
                                 </ul>
                             </div>
@@ -175,20 +172,26 @@ if (empty($_SESSION['admin'])) {
                                     <td>' . $kegiatan->getId() . '</td>
                                     <td>' . $kegiatan->getKegiatan() . '<hr>' . $kegiatan->getTempat() . '</td>
                                     <td>' . $kegiatan->getTanggalMulai()->format($dateFormat) . '<hr>' . $kegiatan->getTanggalSelesai()->format($dateFormat) . '</td>
-                                    <td>' . $kegiatan->getPelaksanaString(", ") .'<hr>'. $kegiatan->getPesertaString(", ") . '</td>
+                                    <td>' . $kegiatan->getPelaksanaString(", ") . '<hr>' . $kegiatan->getPesertaString(", ") . '</td>
                                     <td>';
 
-                                    if($_SESSION['admin'] != 2){
-                                        echo '<button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button>';
-                                    } else {
-                                      echo '<a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&id='.$kegiatan->getId().'">
-                                                <i class="material-icons">edit</i> EDIT</a>
-                                            <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&id='.$kegiatan->getId().'">
-                                                <i class="material-icons">delete</i> DEL</a>';
-                                    } echo '
+                        if ($_SESSION['admin'] != 2) {
+                            ?><button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button><?php
+                        } else {
+                            ?>
+                            <a class="btn small blue waves-effect waves-light" href="?page=<?= $page ?>&act=edit&id=<?= $kegiatan->getId() ?>">
+                                <i class="material-icons">edit</i> EDIT</a>
+                            <a class="btn small deep-orange waves-effect waves-light"
+                                href="?page=<?= $page ?>&act=del&id=<?= $kegiatan->getId() ?>">
+                                <i class="material-icons">delete</i> DEL</a>
+                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&id_surat=<?=$kegiatan->getId()?>" target="_blank">
+                                <i class="material-icons">print</i> PRINT</a>
+                            <?php
+                        }
+                        echo '
                                     </td>
                                 </tr>';
-                                    $no++;
+                        $no++;
                     }
                 } else {
                     echo '<tr><td colspan="5"><center><p class="add">Tidak ada data yang ditemukan</p></center></td></tr>';
@@ -273,16 +276,21 @@ if (empty($_SESSION['admin'])) {
                                       <td>' . $kegiatan->getId() . '</td>
                                       <td>' . $kegiatan->getKegiatan() . '<hr>' . $kegiatan->getTempat() . '</td>
                                       <td>' . $kegiatan->getTanggalMulai()->format($dateFormat) . '<hr>' . $kegiatan->getTanggalSelesai()->format($dateFormat) . '</td>
-                                      <td>' . $kegiatan->getPelaksanaString(", ") .'<hr>'. $kegiatan->getPesertaString(", ") . '</td>
+                                      <td>' . $kegiatan->getPelaksanaString(", ") . '<hr>' . $kegiatan->getPesertaString(", ") . '</td>
                                       <td>';
-                                        if($_SESSION['admin'] != 2){
-                                            echo '<button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button>';
-                                        } else {
-                                        echo '<a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&id='.$kegiatan->getId().'">
-                                                    <i class="material-icons">edit</i> EDIT</a>
-                                                <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&id='.$kegiatan->getId().'">
-                                                    <i class="material-icons">delete</i> DEL</a>';
-                                        } echo '
+                        if ($_SESSION['admin'] != 2) {
+                            echo '<button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button>';
+                        } else {
+                            ?>
+                            <a class="btn small blue waves-effect waves-light" href="?page=<?=$page?>&act=edit&id=<?=$kegiatan->getId()?>">
+                                <i class="material-icons">edit</i> EDIT</a>
+                            <a class="btn small deep-orange waves-effect waves-light" href="?page=<?=$page?>&act=del&id=<?=$kegiatan->getId()?>">
+                                <i class="material-icons">delete</i> DEL</a>
+                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=<?=$page?>&act=print&id=<?=$kegiatan->getId()?>" target="_blank">
+                                <i class="material-icons">print</i> PRINT</a>
+                            <?php
+                        }
+                        echo '
                                         </td>
                                     </tr>';
                         $no++;

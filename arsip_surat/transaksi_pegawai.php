@@ -269,13 +269,15 @@
                                             if($_SESSION['admin'] != 2){
                                                 echo '<button class="btn small blue-grey waves-effect waves-light"><i class="material-icons">error</i> No Action</button>';
                                             } else {
-                                            echo '<a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&nip='.$pegawai->getNip().'">
-                                                        <i class="material-icons">edit</i> EDIT</a>
-                                                    <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&nip='.$pegawai->getNip().'">
-                                                        <i class="material-icons">delete</i> DEL</a>';
-                                            } echo '
+                                                ?>
+                                                <a class="btn small blue waves-effect waves-light" href="?page=<?=$page?>&act=edit&nip=<?=$pegawai->getNip()?>">
+                                                    <i class="material-icons">edit</i> EDIT</a>
+                                                <a class="btn small deep-orange waves-effect waves-light" href="?page=<?=$page?>&act=del&nip=<?=$pegawai->getNip()?>">
+                                                    <i class="material-icons">delete</i> DEL</a>
+                                            <?php } ?>
                                             </td>
                                         </tr>';
+                                    <?php
                                     $no++;
                                 }
                             } else {

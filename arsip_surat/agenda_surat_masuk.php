@@ -147,16 +147,14 @@
                         <table class="bordered" id="tbl" width="100%">
                             <thead class="blue lighten-4">
                                 <tr>
-                                    <th width="3%">No Agenda</th>
-                                    <th width="5%">Kode</th>
-                                    <th width="21%">Isi Ringkas</th>
-                                    <th width="18%">Asal Surat</th>
-                                    <th width="15%">Nomor Surat</th>
-                                    <th width="8%">Tanggal<br/> Surat</th>
-                                    <th width="8%">Tanggal Diterima</th>
-                                    <th width="10%">Penerima</th>
-                                    <th width="10%">Paraf</th>
-                                    <th width="10%">Keterangan</th>
+                                    <th width="10%">No Surat</th>
+                                    <th width="20%">Perihal</th>
+                                    <th width="20%">Asal Surat</th>
+                                    <th width="15%">Keterangan</th>
+                                    <th width="15%">Tanggal<br/> Surat</th>
+                                    <th width="15%">Tanggal Diterima</th>
+                                    <th width="10%">Pengirim</th>
+                                    <th width="20%">Klasifikasi</th>
                                 </tr>
                             </thead>
 
@@ -167,11 +165,10 @@
                                 while($row = mysqli_fetch_array($query)){
                                  echo '
                                  <tr>
-                                        <td>'.$row['no_agenda'].'</td>
-                                        <td>'.$row['kode'].'</td>
-                                        <td>'.$row['isi'].'</td>
-                                        <td>'.$row['asal_surat'].'</td>
                                         <td>'.$row['no_surat'].'</td>
+                                        <td>'.$row['perihal'].'</td>
+                                        <td>'.$row['asal_surat'].'</td>
+                                        <td>'.$row['keterangan'].'</td>
                                         <td>'.indoDate($row['tgl_surat']).'</td>
                                         <td>'.indoDate($row['tgl_diterima']).'</td>
                                         <td>';
@@ -183,9 +180,7 @@
                                         }
 
                                         echo ''.$row['id_user'].'</td>
-                                        <td></td>
-                                        <td>'.$row['keterangan'].'';
-                                  echo '</td>
+                                        <td> ' . $row['klasifikasi'] . '</td>
                                 </tr>';
                                 }
                             } else {

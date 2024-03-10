@@ -25,9 +25,12 @@ if (empty($_SESSION['admin'])) {
 
     if (isset($_REQUEST['submit'])) {
         //validasi form kosong
-        if ($_REQUEST['nip'] == "" || $_REQUEST['nama'] == "" || $_REQUEST['telepon'] == "" || $_REQUEST['alamat'] == "") {
+        if ($_REQUEST['nip'] == "" 
+                || $_REQUEST['nama'] == "" 
+                || $_REQUEST['telepon'] == ""
+                || $_REQUEST['alamat'] == "") {
             $_SESSION['errEmpty'] = 'ERROR! Semua form wajib diisi';
-            echo '<script language="javascript">window.history.back();</script>';
+            openPreviousPage();
         } else {
 
             $pegawai = new Pegawai(
@@ -41,16 +44,22 @@ if (empty($_SESSION['admin'])) {
 
             if (!preg_match("/^[0-9]*$/", $pegawai->getNip())) {
                 $_SESSION['nip'] = 'Form NIP hanya boleh mengandung karakter angka';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
+            } elseif (!preg_match("/\b.{18}\b/", $pegawai->getNip())) {
+                $_SESSION['nipLengthErr'] = 'Panjang NIP tidak boleh kurang dari atau lebih dari 18';
+                openPreviousPage();
             } elseif (!preg_match("/^[a-zA-Z0-9.,() \/ -]*$/", $pegawai->getNama())) {
                 $_SESSION['namaErr'] = 'Form Nama hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-),kurung() dan garis miring(/)';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
             } elseif (!preg_match("/^[0-9]*$/", $pegawai->getTelepon())) {
                 $_SESSION['telepon'] = 'Form No. Telepon hanya boleh mengandung karakter angka 0 sampai 9';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
+            } elseif (!preg_match("/\b.{10,15}\b/", $pegawai->getTelepon())) {
+                $_SESSION['telepon'] = 'Panjang No. Telepon hanya boleh 10 sampai 15';
+                openPreviousPage();
             } elseif (!preg_match("/^[a-zA-Z0-9.,_()%&@\/\r\n -]*$/", $pegawai->getAlamat())) {
                 $_SESSION['alamat'] = 'Form Alamat hanya boleh mengandung karakter huruf, angka, spasi, titik(.), koma(,), minus(-), garis miring(/), kurung(), underscore(_), dan(&) persen(%) dan at(@)';
-                echo '<script language="javascript">window.history.back();</script>';
+                openPreviousPage();
             } else {
 
                 //jika form valid -> edit data
@@ -62,7 +71,7 @@ if (empty($_SESSION['admin'])) {
                     die();
                 } else {
                     $_SESSION['errQ'] = 'ERROR! Ada masalah dengan query';
-                    echo '<script language="javascript">window.history.back();</script>';
+                    openPreviousPage();
                 }
             }
         }
@@ -126,12 +135,17 @@ if (empty($_SESSION['admin'])) {
                     <!-- Row in form START -->
                     <div class="input-field col s6">
                         <i class="material-icons prefix md-prefix">looks_one</i>
-                        <input id="nip" type="text" class="validate" name="nip" value="<?php echo $pegawai->getNip() ?>" disabled required>
+                        <input id="nip" type="text" class="validate" name="nip" value="<?php echo $pegawai->getNip() ?>" readonly required>
                         <?php
                         if (isset($_SESSION['nip'])) {
                             $nip = $_SESSION['nip'];
                             echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $nip . '</div>';
                             unset($_SESSION['nip']);
+                        }
+                        if (isset($_SESSION['nipLengthErr'])) {
+                            $nipLengthErr = $_SESSION['nipLengthErr'];
+                            echo '<div id="alert-message" class="callout bottom z-depth-1 red lighten-4 red-text">' . $nipLengthErr . '</div>';
+                            unset($_SESSION['nipLengthErr']);
                         }
                         if (isset($_SESSION['errDup'])) {
                             $errDup = $_SESSION['errDup'];

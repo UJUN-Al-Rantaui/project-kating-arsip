@@ -26,7 +26,7 @@
                         include "disposisi.php";
                         break;
                     case 'print':
-                        include "cetak_disposisi.php";
+                        include "cetak_surat_cuti.php";
                         break;
                     case 'del':
                         include "hapus_surat_cuti.php";
@@ -174,18 +174,18 @@
                                     <td>'.$suratCuti->getKodeCuti().'</td>
                                     <td>'.$suratCuti->getNama().'<hr>'.$suratCuti->getNip().'</td>
                                     <td>'.$suratCuti->getJenisCuti().'</td>
-                                    <td>'.$suratCuti->getTanggalMulai()->format($dateFormat).'<hr>'.$suratCuti->getTanggalSelesai()->format($dateFormat).'</td>
+                                    <td>'.$suratCuti->getTanggalMulai()->format($dateFormat).'<hr>'.$suratCuti->getTanggalSelesai()->format($dateFormat).'</td>';
+                                    ?>
                                     <td>    
-                                        <a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&kode_cuti='.$suratCuti->getKodeCuti().'">
+                                        <a class="btn small blue waves-effect waves-light" href="?page=<?=$page?>&act=edit&kode_cuti=<?=$suratCuti->getKodeCuti()?>">
                                             <i class="material-icons">edit</i> EDIT</a>
-                                        <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page='.$page.'&act=disp&kode_cuti='.$suratCuti->getKodeCuti().'" style="display:none;">
-                                            <i class="material-icons">description</i> DISP</a>
-                                        <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&kode_cuti='.$suratCuti->getKodeCuti().'" target="_blank" style="display: none;">
+                                        <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=<?=$page?>&act=print&kode_cuti=<?=$suratCuti->getKodeCuti()?>" target="_blank">
                                             <i class="material-icons">print</i> PRINT</a>
-                                        <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&kode_cuti='.$suratCuti->getKodeCuti().'">
+                                        <a class="btn small deep-orange waves-effect waves-light" href="?page=<?=$page?>&act=del&kode_cuti=<?=$suratCuti->getKodeCuti()?>">
                                             <i class="material-icons">delete</i> DEL</a>
                                         </td>
-                                    </tr>';
+                                    </tr>;
+                                    <?php
                                     $no++;
                                 }
                             } else {
@@ -270,18 +270,18 @@
                                       <td>'.$suratCuti->getKodeCuti().'</td>
                                       <td>'.$suratCuti->getNama().'<hr>'.$suratCuti->getNip().'</td>
                                       <td>'.$suratCuti->getJenisCuti().'</td>
-                                      <td>'.$suratCuti->getTanggalMulai()->format($dateFormat).'<hr>'.$suratCuti->getTanggalSelesai()->format($dateFormat).'</td>
+                                      <td>'.$suratCuti->getTanggalMulai()->format($dateFormat).'<hr>'.$suratCuti->getTanggalSelesai()->format($dateFormat).'</td>';
+                                      ?>
                                         <td>
-                                            <a class="btn small blue waves-effect waves-light" href="?page='.$page.'&act=edit&kode_cuti='.$suratCuti->getKodeCuti().'">
+                                            <a class="btn small blue waves-effect waves-light" href="?page=<?=$page?>&act=edit&kode_cuti=<?=$suratCuti->getKodeCuti()?>">
                                                 <i class="material-icons">edit</i> EDIT</a>
-                                            <a class="btn small light-green waves-effect waves-light tooltipped" data-position="left" data-tooltip="Pilih Disp untuk menambahkan Disposisi Surat" href="?page='.$page.'&act=disp&kode_cuti='.$suratCuti->getKodeCuti().'" style="display:none;">
-                                                <i class="material-icons">description</i> DISP</a>
-                                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=ctk&kode_cuti='.$suratCuti->getKodeCuti().'" target="_blank" style="display:none;">
+                                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=<?=$page?>&act=print&kode_cuti=<?=$suratCuti->getKodeCuti()?>" target="_blank">
                                                 <i class="material-icons">print</i> PRINT</a>
-                                            <a class="btn small deep-orange waves-effect waves-light" href="?page='.$page.'&act=del&kode_cuti='.$suratCuti->getKodeCuti().'">
+                                            <a class="btn small deep-orange waves-effect waves-light" href="?page=<?=$page?>&act=del&kode_cuti=<?=$suratCuti->getKodeCuti()?>">
                                                 <i class="material-icons">delete</i> DEL</a>
                                         </td>
-                                    </tr>';
+                                    </tr>
+                                    <?php
                                     $no++;
                                 }
                             } else {

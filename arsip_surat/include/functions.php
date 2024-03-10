@@ -213,3 +213,10 @@ function restore($host, $user, $pass, $dbname, $file){
         }
     }
 }
+
+/**
+ * Membuka Page sebelumnya
+ */
+function openPreviousPage(){
+    ?><script>window.history.back()</script><?php
+}

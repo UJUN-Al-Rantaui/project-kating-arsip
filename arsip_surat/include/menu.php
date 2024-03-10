@@ -155,13 +155,13 @@ if (!empty($_SESSION['admin'])) {
                             class="material-icons md-18">arrow_drop_down</i></a></li>
                 <ul id='agenda' class='dropdown-content'>
                     <li><a href="?page=asm">Surat Masuk</a></li>
-                    <li style="display: none"><a href="?page=ask">Surat Keluar</a></li>
+                    <li><a href="?page=ask">Surat Keluar</a></li>
                 </ul>
                 <li><a class="dropdown-button" href="#!" data-activates="agenda">Galeri File <i
                             class="material-icons md-18">arrow_drop_down</i></a></li>
                 <ul id='agenda' class='dropdown-content'>
                     <li><a href="?page=gsm">Surat Masuk</a></li>
-                    <li style="display: none"><a href="?page=gsk">Surat Keluar</a></li>
+                    <li><a href="?page=gsk">Surat Keluar</a></li>
                 </ul>
                 <li style="display: none;"><a href="?page=ref">Referensi</a></li>
                 <?php

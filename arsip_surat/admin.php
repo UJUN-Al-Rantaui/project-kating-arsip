@@ -97,18 +97,13 @@
                         <h4>Selamat Datang <?php echo $_SESSION['nama']; ?></h4>
                         <p class="description">Anda login sebagai
                         <?php
-                            if($_SESSION['admin'] == 1){
-                                echo "<strong>Administrator</strong>. Anda memiliki kemampuan manipulasi user dan mengubah tampilan website .";
-                            } elseif($_SESSION['admin'] == 2){
-                                echo "<strong>Admin</strong>. Berikut adalah statistik data yang tersimpan dalam sistem.";
-                            } elseif($_SESSION['admin'] == 4) {
-                                echo "<strong>PKM</strong>. Berikut adalah statistik data yang tersimpan dalam sistem.";
-                            } elseif($_SESSION['admin'] == 5) {
-                                echo "<strong>PKA</strong>. Berikut adalah statistik data yang tersimpan dalam sistem.";
-                            } elseif($_SESSION['admin'] == 6) {
-                                echo "<strong>P4GKA</strong>. Berikut adalah statistik data yang tersimpan dalam sistem.";
-                            } else {
-                                echo "<strong>Pengguna tak dikenali</strong>.";
+                            switch($_SESSION['admin']){
+                                case 1 : echo "<strong>Administrator</strong>. Anda memiliki kemampuan manipulasi user dan mengubah tampilan website ."; break;
+                                case 2 : echo "<strong>Admin</strong>. Berikut adalah statistik data yang tersimpan dalam sistem."; break;
+                                case 4 : echo "<strong>PKM</strong>. Berikut adalah statistik data yang tersimpan dalam sistem."; break;
+                                case 5 : echo "<strong>PKA</strong>. Berikut adalah statistik data yang tersimpan dalam sistem."; break;
+                                case 6 : echo "<strong>P4GKA</strong>. Berikut adalah statistik data yang tersimpan dalam sistem."; break;
+                                default: echo "<strong>Pengguna tak dikenali</strong>.";
                             }?></p>
                     </div>
                 </div>
@@ -197,7 +192,7 @@
                 <div class="col s12 m4">
                     <div class="card blue darken-1">
                         <div class="card-content">
-                            <span class="card-title white-text"><i class="material-icons md-36">description</i> Jumlah Kegiatan</span>
+                            <span class="card-title white-text"><i class="material-icons md-36">assignment</i> Jumlah Kegiatan</span>
                             <?php echo '<h5 class="white-text link">'.$countKegiatan.' Kegiatan</h5>'; ?>
                         </div>
                     </div>

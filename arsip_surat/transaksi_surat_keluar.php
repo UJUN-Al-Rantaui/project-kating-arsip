@@ -22,6 +22,9 @@
                 case 'edit':
                     include "edit_surat_keluar.php";
                     break;
+                case 'print':
+                    include "cetak_surat_keluar.php";
+                    break;
                 case 'del':
                     include "hapus_surat_keluar.php";
                     break;
@@ -166,6 +169,8 @@
                                         } else {
                                           echo '<a class="btn small blue waves-effect waves-light" href="?page=tsk&act=edit&id_surat='.$row['id_surat'].'">
                                                     <i class="material-icons">edit</i> EDIT</a>
+                                                <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=tsk&act=print&id_surat='.$row['id_surat'].'" target="_blank">
+                                                    <i class="material-icons">print</i> PRINT</a>
                                                 <a class="btn small deep-orange waves-effect waves-light" href="?page=tsk&act=del&id_surat='.$row['id_surat'].'">
                                                     <i class="material-icons">delete</i> DEL</a>';
                                         } echo '
@@ -190,8 +195,8 @@
                                     <th width="10%">No. Agenda</th>
                                     <th width="31%">Isi Ringkas<br/> File</th>
                                     <th width="24%">Tujuan</th>
-                                    <th width="19%">No. Surat<br/>Tgl Surat</th>
-                                    <th width="16%">Tindakan <span class="right tooltipped" data-position="left" data-tooltip="Atur jumlah data yang ditampilkan"><a class="modal-trigger" href="#modal"><i class="material-icons" style="color: #333;">settings</i></a></span></th>
+                                    <th width="15%">No. Surat<br/>Tgl Surat</th>
+                                    <th width="20%">Tindakan <span class="right tooltipped" data-position="left" data-tooltip="Atur jumlah data yang ditampilkan"><a class="modal-trigger" href="#modal"><i class="material-icons" style="color: #333;">settings</i></a></span></th>
 
                                         <div id="modal" class="modal">
                                             <div class="modal-content white">
@@ -257,7 +262,8 @@
                                     } else {
                                         echo ' <em>Tidak ada file yang diupload</em>';
                                     } echo '</td>
-                                    <td>'.$row['tujuan'].'</td><td>'.$row['no_surat'].'<br/><hr/>'.indoDate($row['tgl_surat']).'</td>
+                                    <td>'.$row['tujuan'].'</td>
+                                    <td>'.$row['no_surat'].'<br/><hr/>'.indoDate($row['tgl_surat']).'</td>
                                     <td>';
 
                                     if($_SESSION['id_user'] != $row['id_user'] AND $_SESSION['admin'] != 2){
@@ -265,6 +271,8 @@
                                     } else {
                                       echo '<a class="btn small blue waves-effect waves-light" href="?page=tsk&act=edit&id_surat='.$row['id_surat'].'">
                                                 <i class="material-icons">edit</i> EDIT</a>
+                                            <a class="btn small yellow darken-3 waves-effect waves-light" href="?page=tsk&act=print&id_surat='.$row['id_surat'].'" target="_blank">
+                                                <i class="material-icons">print</i> PRINT</a>
                                             <a class="btn small deep-orange waves-effect waves-light" href="?page=tsk&act=del&id_surat='.$row['id_surat'].'">
                                                 <i class="material-icons">delete</i> DEL</a>';
                                     } echo '
