@@ -129,7 +129,7 @@
                 $kegiatanService = new KegiatanService(new KegiatanRepositoryImpl());
 
                 //menghitung jumlah surat masuk
-                $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_surat_masuk " . ($_SESSION['admin'] != 2 ? " WHERE tujuan_surat={$_SESSION['admin']}":"")));
+                $count1 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_surat_masuk "));
 
                 //menghitung jumlah surat masuk
                 $count2 = mysqli_num_rows(mysqli_query($config, "SELECT * FROM tbl_surat_keluar"));

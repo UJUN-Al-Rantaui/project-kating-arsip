@@ -172,7 +172,6 @@
                         echo '<img class="logodisp" src="./upload/'.$logo.'"/>';
                         echo '<h6 class="up">'.$institusi.'</h6>';
                         echo '<h5 class="up" id="nama">'.$nama.'</h5><br/>';
-                        echo '<h6 class="status">'.$status.'</h6>';
                         echo '<span id="alamat">'.$alamat.'</span>';
 
                     echo '
@@ -204,10 +203,6 @@
                                 <td id="left" colspan="2">: '.$row['asal_surat'].'</td>
                             </tr>
                             <tr>
-                                <td id="right"><strong>Tujuan Surat</strong></td>
-                                <td id="left" colspan="2">: '.$row['tujuan_surat'].'</td>
-                            </tr>
-                            <tr>
                                 <td id="right"><strong>Perihal</strong></td>
                                 <td id="left" colspan="2">: '.$row['perihal'].'</td>
                             </tr>
@@ -235,7 +230,14 @@
                                     <strong>Catatan</strong> :<br/> '.$row['catatan'].'
                                     <div style="height: 25px;"></div>
                                 </td>
-                                <td><strong>Diteruskan Kepada</strong> : <br/>'.$row['tujuan'].'</td>
+                                <td><strong>Diteruskan Kepada</strong> : <br/>';
+                                switch($row['tujuan']){
+                                    case 4: echo "PKM"; break;
+                                    case 5: echo "PKA"; break;
+                                    case 6: echo "P4GKA"; break;
+                                    default: echo "Invalid Data"; break;
+                                }
+                                echo '</td>
                             </tr>';
                                 }
                             } else {
@@ -257,7 +259,7 @@
                 if(!empty($kepsek)){
                     echo '<p class="lead">'.$kepsek.'</p>';
                 } else {
-                    echo '<p class="lead">H. Riza Fachri, S.Kom.</p>';
+                    echo '<p class="lead">Data Tidak Ada</p>';
                 }
                 if(!empty($nip)){
                     echo '<p>NIP. '.$nip.'</p>';
